@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Confirmed{% endblock %}
+{% block content %}<h1>Request received ✓</h1><p>Your reference number:</p>
+<span class="ref" id="reference">{{ reference }}</span>
+<dl><dt>Name</dt><dd id="c-name">{{ sub.full_name }}</dd><dt>Email</dt><dd id="c-email">{{ sub.email }}</dd>
+<dt>Department</dt><dd>{{ sub.department }}</dd><dt>Start</dt><dd>{{ sub.start_date }}</dd></dl>{% endblock %}

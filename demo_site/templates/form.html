@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}New request{% endblock %}
+{% block content %}<h1>New request</h1>
+<form method="post" action="/submit" id="request-form" novalidate>
+<label for="full_name">Full name</label>
+<input type="text" id="full_name" name="full_name" value="{{ values.get('full_name','') }}">
+{% if errors.full_name %}<div class="field-error">{{ errors.full_name }}</div>{% endif %}
+<label for="email">Email</label>
+<input type="text" id="email" name="email" value="{{ values.get('email','') }}">
+{% if errors.email %}<div class="field-error">{{ errors.email }}</div>{% endif %}
+<label for="department">Department</label>
+<select id="department" name="department"><option value="">Choose…</option>
+{% for d in departments %}<option value="{{ d }}" {{ 'selected' if values.get('department')==d }}>{{ d }}</option>{% endfor %}</select>
+{% if errors.department %}<div class="field-error">{{ errors.department }}</div>{% endif %}
+<label for="start_date">Start date</label>
+<input type="date" id="start_date" name="start_date" value="{{ values.get('start_date','') }}">
+{% if errors.start_date %}<div class="field-error">{{ errors.start_date }}</div>{% endif %}
+<label for="notes">Notes (optional)</label><textarea id="notes" name="notes" rows="2">{{ values.get('notes','') }}</textarea>
+<label class="check"><input type="checkbox" id="newsletter" name="newsletter" value="1" {{ 'checked' if values.get('newsletter') }}> Subscribe to updates</label>
+<button type="submit" id="submit">Submit request</button></form>{% endblock %}
