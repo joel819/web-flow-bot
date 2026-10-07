@@ -1,0 +1,31 @@
+# docker compose up --build --abort-on-container-exit
+# Set DEMO_FLAKY=1 to make ~1 in 4 requests fail or stall:  DEMO_FLAKY=1 docker compose up --build
+services:
+  site:
+    build: .
+    command: python -m demo_site --host 0.0.0.0 --port 8000
+    environment:
+      DEMO_USERNAME: ${WFB_USERNAME:-demo}
+      DEMO_PASSWORD: ${WFB_PASSWORD:-demo-pass-123}
+      DEMO_FLAKY: ${DEMO_FLAKY:-0}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health')"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    ports:
+      - "8000:8000"
+
+  bot:
+    build: .
+    depends_on:
+      site:
+        condition: service_healthy
+    environment:
+      WFB_USERNAME: ${WFB_USERNAME:-demo}
+      WFB_PASSWORD: ${WFB_PASSWORD:-demo-pass-123}
+      WFB_BASE_URL: http://site:8000
+    volumes:
+      - ./runs:/app/runs
+    ipc: host
+    init: true

@@ -52,7 +52,7 @@ def create_app(
         return templates.TemplateResponse(request, name, ctx, status_code=status)
 
     def error_page(request: Request, status: int, title: str, message: str) -> HTMLResponse:
-        return render(request, "error.html", status, title=title, message=message, status=status)
+        return render(request, "error.html", status, title=title, message=message, code=status)
 
     def current_user(request: Request) -> str | None:
         return sessions.get(request.cookies.get("wfb_session", ""))
